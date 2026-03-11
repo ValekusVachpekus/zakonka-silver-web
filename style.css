@@ -392,23 +392,6 @@ footer {
   }
   .hero-content { max-width: 1100px; }
   .hero h1 { font-size: 3.4rem; }
-  .steps {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.1rem;
-  }
-  /* Одиночный шаг — растянуть на всю ширину (если нечётный последний) */
-  .steps .step:last-child:nth-child(odd) {
-    grid-column: 1 / -1;
-  }
-  /* Ветвление и предупреждения — всегда в один столбец */
-  .step-branch,
-  .steps:has(.step.warning),
-  .steps:has(.step.darkred) {
-    display: flex;
-    flex-direction: column;
-  }
-  .article-block { padding: 1.6rem 2rem; }
 }
 
 /* ===== Ультраширокий (1920px+) ===== */
@@ -475,6 +458,7 @@ footer {
 }
 
 /* ===== Блоки статей (полномочия) ===== */
+/* ── старый article-block (обратная совместимость) ─── */
 .article-block {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -482,11 +466,6 @@ footer {
   border-radius: 8px;
   padding: 1.4rem 1.6rem;
   margin-bottom: 1.5rem;
-  transition: border-color 0.2s;
-}
-.article-block:hover {
-  border-color: var(--gold);
-  border-left-color: var(--gold-hover);
 }
 .article-block h2 {
   font-size: 1rem;
@@ -496,20 +475,56 @@ footer {
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
-.article-block ol, .article-block ul {
-  padding-left: 1.4rem;
-  color: var(--text-secondary);
-  font-size: 0.93rem;
-  line-height: 1.75;
-}
-.article-block ol li, .article-block ul li {
-  margin-bottom: 0.6rem;
-}
 .article-block p {
   color: var(--text-secondary);
   font-size: 0.93rem;
   margin-bottom: 0.6rem;
 }
+
+/* ── chapter-block: жёлтая рамка-контейнер для главы ── */
+.chapter-block {
+  border: 1px solid var(--gold);
+  border-radius: 10px;
+  padding: 1.4rem 1.6rem 0.6rem;
+  margin-bottom: 2rem;
+  background: var(--bg-card);
+}
+
+.chapter-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 1.2rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid rgba(212,168,67,0.25);
+}
+
+/* ── article-item: статья внутри главы, без квадрата ── */
+.article-item {
+  padding: 0.8rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.article-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0.2rem;
+}
+
+.article-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin: 0 0 0.5rem;
+}
+
+.article-item p {
+  color: var(--text-secondary);
+  font-size: 0.93rem;
+  line-height: 1.75;
+  margin: 0 0 0.5rem;
+}
+.article-item p:last-child { margin-bottom: 0; }
 
 /* ===== Шаги (steps) ===== */
 .steps {
