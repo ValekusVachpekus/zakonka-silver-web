@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Поиск — Законодательство</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="search-index.js"></script>
+  <style>
+    .search-hero {
+      padding: 2.5rem 1rem 1.5rem;
+      text-align: center;
+    }
+    .search-hero h1 { font-size: 1.8rem; color: var(--gold); margin-bottom: 1rem; }
+    .search-box-wrap {
+      max-width: 640px;
+      margin: 0 auto;
+      display: flex;
+      gap: 0.5rem;
+    }
+    .search-box-wrap input {
+      flex: 1;
+      padding: 0.7rem 1rem;
+      border-radius: 6px;
+      border: 1px solid #2a3a5c;
+      background: var(--bg-card);
+      color: var(--text);
+      font-size: 1rem;
+      outline: none;
+    }
+    .search-box-wrap input:focus { border-color: var(--accent); }
+    .search-box-wrap button {
+      padding: 0.7rem 1.4rem;
+      border-radius: 6px;
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .search-box-wrap button:hover { background: #3a7cc4; }
+    .search-status {
+      text-align: center;
+      color: var(--text-muted);
+      margin: 1rem 0 0.5rem;
+      font-size: 0.9rem;
+    }
+    .results-list {
+      max-width: 860px;
+      margin: 1.5rem auto 3rem;
+      padding: 0 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .result-card {
+      background: var(--bg-card);
+      border-radius: 8px;
+      border-left: 3px solid var(--gold);
+      padding: 1rem 1.2rem;
+      text-decoration: none;
+      color: var(--text);
+      display: block;
+      transition: background 0.15s, transform 0.15s;
+    }
+    .result-card:hover { background: #112040; transform: translateX(3px); }
+    .result-law { font-size: 0.78rem; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.25rem; }
+    .result-chapter { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.3rem; }
+    .result-article { font-size: 1rem; font-weight: 700; color: var(--gold); margin-bottom: 0.4rem; }
+    .result-snippet { font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; }
+    .result-snippet mark {
+      background: rgba(212,168,67,0.25);
+      color: var(--gold);
+      border-radius: 2px;
+      padding: 0 2px;
+    }
+    .no-results { text-align: center; color: var(--text-muted); padding: 3rem 0; font-size: 1rem; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">⚖️ Законодательство</a>
+  <div class="nav-sections">
+    <button class="nav-dropdown-btn" onclick="toggleNavDropdown()">Законы ▾</button>
+    <div class="nav-dropdown" id="navDropdown">
+      <a href="pages/konstitutsiya.html" data-page="konstitutsiya">📜 Конституция</a>
+      <a href="pages/uk.html" data-page="uk">⚖️ УК</a>
+      <a href="pages/upk.html" data-page="upk">🔍 УПК</a>
+      <a href="pages/koap.html" data-page="koap">📋 КоАП</a>
+      <a href="pages/tk.html" data-page="tk">💼 ТК</a>
+      <a href="pages/uik.html" data-page="uik">🏛️ УИК</a>
+      <a href="pages/kuas.html" data-page="kuas">🏛️ КУАС</a>
+      <a href="pages/pdd.html" data-page="pdd">🚗 ПДД</a>
+      <a href="pages/fz-politsiya.html" data-page="fz-politsiya">👮 ФЗ О полиции</a>
+      <a href="pages/fz-1-oruzhie.html" data-page="fz-1-oruzhie">🔫 ФЗ №1 Об оружии</a>
+      <a href="pages/fz-2-fsb.html" data-page="fz-2-fsb">🕵️ ФЗ №2 О ФСБ</a>
+      <a href="pages/fz-4-sluzh.html" data-page="fz-4-sluzh">🛡️ ФЗ №4 О службе в спецподразделениях</a>
+      <a href="pages/fz-5-obrash.html" data-page="fz-5-obrash">📩 ФЗ №5 Об обращениях граждан</a>
+      <a href="pages/fz-6-fsin.html" data-page="fz-6-fsin">🔒 ФЗ №6 О ФСИН</a>
+      <a href="pages/fz-7-sud.html" data-page="fz-7-sud">⚖️ ФЗ №7 О судебной системе</a>
+      <a href="pages/fz-8-voennie.html" data-page="fz-8-voennie">🪖 ФЗ №8 О вооружённых силах</a>
+      <a href="pages/fz-9-terror.html" data-page="fz-9-terror">💥 ФЗ №9 О терроризме</a>
+      <a href="pages/z-1-terr.html" data-page="z-1-terr">🚧 Закон №1 О территориях</a>
+      <a href="pages/z-2-pravit.html" data-page="z-2-pravit">🏢 Закон №2 О Правительстве НО</a>
+      <a href="pages/ustav-ovd.html" data-page="ustav-ovd">📖 Устав ОВД</a>
+      <a href="pages/fp-1.html" data-page="fp-1">📑 ФП №1</a>
+      <a href="pages/slovar.html" data-page="slovar">📚 Юридический словарь</a>
+    </div>
+  </div>
+</nav>
+
+<div class="search-hero">
+  <h1>🔎 Поиск по законам</h1>
+  <form class="search-box-wrap" onsubmit="doSearch(); return false;">
+    <input type="text" id="q" placeholder="Введите слово или фразу…" autocomplete="off" />
+    <button type="submit">Найти</button>
+  </form>
+  <div class="search-status" id="status"></div>
+</div>
+
+<div class="results-list" id="results"></div>
+
+<footer>
+  <p>Законодательство AMAZING ONLINE — Silver Server &nbsp;|&nbsp; Автор: Vladislav_Shetkov</p>
+</footer>
+
+<script>
+function toggleNavDropdown() {
+  document.getElementById('navDropdown').classList.toggle('open');
+}
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.nav-sections')) {
+    var d = document.getElementById('navDropdown');
+    if (d) d.classList.remove('open');
+  }
+});
+
+function loadIndex(cb) {
+  if (typeof SEARCH_INDEX === 'undefined') {
+    document.getElementById('status').textContent = 'Ошибка: индекс не загружен.';
+    return;
+  }
+  cb();
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function highlight(text, words) {
+  var escaped = words.map(function(w){
+    return w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  });
+  var re = new RegExp('(' + escaped.join('|') + ')', 'gi');
+  return escapeHtml(text).replace(re, '<mark>$1</mark>');
+}
+
+function getSnippet(text, words, len) {
+  len = len || 300;
+  var lower = text.toLowerCase();
+  var pos = -1;
+  for (var i = 0; i < words.length; i++) {
+    pos = lower.indexOf(words[i]);
+    if (pos !== -1) break;
+  }
+  if (pos === -1) return text.slice(0, len) + (text.length > len ? '…' : '');
+  var start = Math.max(0, pos - 80);
+  var end = Math.min(text.length, start + len);
+  return (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
+}
+
+function doSearch() {
+  var q = document.getElementById('q').value.trim();
+  if (!q) return;
+  history.replaceState(null, '', '?q=' + encodeURIComponent(q));
+  loadIndex(function() { runSearch(q); });
+}
+
+function runSearch(q) {
+  var words = q.toLowerCase().split(/\s+/).filter(Boolean);
+  var results = [];
+
+  for (var i = 0; i < SEARCH_INDEX.length; i++) {
+    var entry = SEARCH_INDEX[i]; // [slug, law, chapter, article, text]
+    var haystack = (entry[2] + ' ' + entry[3] + ' ' + entry[4]).toLowerCase();
+    var match = true;
+    for (var k = 0; k < words.length; k++) {
+      if (haystack.indexOf(words[k]) === -1) { match = false; break; }
+    }
+    if (match) results.push(entry);
+  }
+
+  var status = document.getElementById('status');
+  var container = document.getElementById('results');
+
+  if (results.length === 0) {
+    status.textContent = 'Ничего не найдено по запросу «' + escapeHtml(q) + '»';
+    container.innerHTML = '<div class="no-results">По вашему запросу ничего не найдено.<br>Попробуйте другие слова.</div>';
+    return;
+  }
+
+  status.textContent = 'Найдено совпадений: ' + results.length;
+  var html = '';
+  for (var j = 0; j < results.length; j++) {
+    var r = results[j];
+    var slug = r[0], law = r[1], chapter = r[2], article = r[3], text = r[4];
+    var snippetRaw = getSnippet(text, words);
+    var snippetH = highlight(snippetRaw, words);
+    var articleH = article ? highlight(article, words) : '';
+    var href = 'pages/' + slug + '.html';
+    html += '<a class="result-card" href="' + href + '">' +
+      '<div class="result-law">' + escapeHtml(law) + '</div>' +
+      (chapter ? '<div class="result-chapter">' + escapeHtml(chapter) + '</div>' : '') +
+      (articleH ? '<div class="result-article">' + articleH + '</div>' : '') +
+      (snippetH ? '<div class="result-snippet">' + snippetH + '</div>' : '') +
+      '</a>';
+  }
+  container.innerHTML = html;
+}
+
+(function(){
+  var params = new URLSearchParams(window.location.search);
+  var q = params.get('q');
+  if (q) {
+    document.getElementById('q').value = q;
+    loadIndex(function(){ runSearch(q); });
+  }
+})();
+</script>
+</body>
+</html>
